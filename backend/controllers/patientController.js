@@ -62,9 +62,55 @@ export const addPatient = (req, res) => {
 };
 
 
+// export const getPatients = (req, res) => {
+//     try {
+
+//         const { search, department } = req.query;
+
+//         const patients = db.prepare(`SELECT * FROM patients ORDER BY created_at DESC`).all();
+
+//         return res.status(200).json({
+//             success: true,
+//             data: patients,
+//         });
+//     }
+//     catch (error) {
+//         console.error(error);
+//         return res.status(500).json({
+//             success: false,
+//             message: "Failed to fetch patients",
+//         });
+//     }
+// }
+
+
+//v2 with search, filter
 export const getPatients = (req, res) => {
+
     try {
-        const patients = db.prepare(`SELECT * FROM patients ORDER BY created_at DESC`).all();
+        const { search, department } = req.query;
+
+        let patients;
+
+        if (search && department) {
+            patients = db.prepare(`SELECT * FROM patients WHERE name LIKE ? AND department = ? ORDER BY created_at DESC`)
+                .all(`%${search}%`, department);
+        }
+
+        else if (search) {
+            patients = db.prepare(`SELECT * FROM patients WHERE name LIKE ? ORDER BY created_at DESC`)
+                .all(`%${search}%`);
+        }
+
+        else if (department) {
+            patients = db.prepare(`SELECT * FROM patients WHERE department = ? ORDER BY created_at DESC`)
+                .all(department);
+        }
+
+        else {
+            patients = db.prepare(`SELECT * FROM patients ORDER BY created_at DESC`)
+                .all();
+        }
 
         return res.status(200).json({
             success: true,
@@ -79,6 +125,7 @@ export const getPatients = (req, res) => {
         });
     }
 }
+
 
 export const getPatientsById = (req, res) => {
 
