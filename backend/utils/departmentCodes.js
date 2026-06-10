@@ -1,7 +1,7 @@
 export const DEP_CODES = {
-    "General Medicine": "GM",
-    Cardiology: "CAR",
-    Orthopedics: "ORT",
-    Dermatology: "DER",
-    Pediatrics: "PED",
+    "General Medicine": "GEN",
+    "Cardiology": "CAR",
+    "Orthopedics": "ORT",
+    "Dermatology": "DER",
+    "Pediatrics": "PED",
 };

@@ -22,6 +22,7 @@ export const validatePatient = ({
 
     if (!department)
         return "Department is required";
+    
 
     if (!/^\d{10}$/.test(mobile))
         return "Mobile number must contain exactly 10 digits";

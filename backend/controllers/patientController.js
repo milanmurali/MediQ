@@ -1,7 +1,12 @@
 import { validatePatient } from "../utils/validation.js";
 import { generateToken } from "../services/generateToken.js";
 import db from "../database/db.js";
+
+
+
+
 export const addPatient = (req, res) => {
+
     try {
         const { name, age, gender, mobile, address, department, } = req.body;
 
@@ -50,7 +55,9 @@ export const addPatient = (req, res) => {
             success: true,
             data: patient,
         });
-    } catch (error) {
+    }
+
+    catch (error) {
         console.error(error);
 
         return res.status(500).json({
@@ -60,4 +67,26 @@ export const addPatient = (req, res) => {
     }
 };
 
+
+export const getPatients = (req, res) => {
+    try {
+        const patients = db.prepare(`
+        SELECT *
+        FROM patients
+        ORDER BY created_at DESC
+      `).all();
+
+        return res.status(200).json({
+            success: true,
+            data: patients,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch patients",
+        });
+    }
+}
 
