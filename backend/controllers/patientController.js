@@ -43,13 +43,7 @@ export const addPatient = (req, res) => {
                 token
             );
 
-        const patient = db
-            .prepare(`
-        SELECT *
-        FROM patients
-        WHERE id = ?
-      `)
-            .get(result.lastInsertRowid);
+        const patient = db.prepare(`SELECT * FROM patients WHERE id = ?`).get(result.lastInsertRowid);
 
         return res.status(201).json({
             success: true,
@@ -70,11 +64,7 @@ export const addPatient = (req, res) => {
 
 export const getPatients = (req, res) => {
     try {
-        const patients = db.prepare(`
-        SELECT *
-        FROM patients
-        ORDER BY created_at DESC
-      `).all();
+        const patients = db.prepare(`SELECT * FROM patients ORDER BY created_at DESC`).all();
 
         return res.status(200).json({
             success: true,
@@ -90,3 +80,29 @@ export const getPatients = (req, res) => {
     }
 }
 
+export const getPatientsById = (req, res) => {
+
+    try {
+        const { id } = req.params;
+        const patient = db.prepare('SELECT * FROM patients WHERE id = ?').get(id);
+
+        if (!patient) {
+            return res.status(404).json({
+                success: false,
+                message: "Patient not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: patient,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch patient",
+        });
+    }
+}
