@@ -11,7 +11,7 @@ export const Welcome = () => {
     localStorage.setItem("fontSize", size)
   }
 
-// Size class
+  // Size class
   const sizeClasses = {
     md: {
       title: "text-4xl md:text-5xl",
@@ -39,7 +39,7 @@ export const Welcome = () => {
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main */}
       <main className="flex-grow flex flex-col items-center justify-center relative px-6 py-12 z-10">
 
         {/* Welcome Hero Content */}
