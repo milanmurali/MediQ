@@ -5,9 +5,10 @@
   "license": "ISC",
   "author": "MM",
   "type": "module",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "run dev": "nodemon server.js"
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0",
