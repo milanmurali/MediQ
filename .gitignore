@@ -22,8 +22,8 @@ frontend/node_modules/
 .env.production
 .env.*
 .env
-Backend/.env
-Frontend/.env
+backend/.env
+frontend/.env
 
 # Build directories
 dist
