@@ -13,7 +13,6 @@ export const generateToken = (department) => {
       SELECT token
       FROM patients
       WHERE department = ?
-      AND DATE(created_at) = DATE('now')
       ORDER BY id DESC
       LIMIT 1
     `)
@@ -28,6 +27,9 @@ export const generateToken = (department) => {
 
     nextNumber = currentNumber + 1;
   }
-
-  return `${deptCode}-${String(nextNumber).padStart(3, "0")}`;
+  console.log({
+    department,
+    latestPatient,
+  });
+return `${deptCode}-${String(nextNumber).padStart(3, "0")}`
 };

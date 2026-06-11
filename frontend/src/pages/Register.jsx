@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
@@ -5,7 +6,10 @@ export const Register = () => {
     const [showAccessibilityMenu, setShowAccessibilityMenu] = useState(false)
     const [textSize, setTextSize] = useState(localStorage.getItem('fontSize') || 'md')
     const navigate = useNavigate()
-    const [department, setDepartment] = useState('')
+    const [errors, setErrors] = useState('')
+    const API = import.meta.env.VITE_BACKEND_HOST;
+
+
     const [formData, setFormData] = useState({
         name: '',
         age: '',
@@ -23,8 +27,17 @@ export const Register = () => {
         }))
     }
 
-    const formsubmit = (e) => {
+    const formsubmit = async (e) => {
         e.preventDefault()
+        setErrors("");
+        console.log(formData);
+        try {
+            const response = await axios.post(`${API}/api/patients`, formData);
+            console.log(response.data);
+        } catch (error) {
+            setErrors(error.response.data.message);
+            console.log(error);
+        }
     }
 
     const changeTextSize = (size) => {
@@ -72,10 +85,10 @@ export const Register = () => {
             </header>
 
             {/* Main Content Area */}
-            <main className="flex-grow flex flex-col items-center justify-center py-12 px-6">
+            <main className="flex-grow flex flex-col items-center justify-center px-6">
                 <div className="w-full max-w-5xl bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-md">
-                    <div className="text-center mb-6">
-                        <h1 className={`${currentFontSize.title} font-bold text-blue-600 mb-2`}>
+                    <div className="text-center mb-2">
+                        <h1 className={`${currentFontSize.title} font-bold text-blue-600`}>
                             Patient Registration
                         </h1>
                         <p className={`${currentFontSize.body} text-slate-600`}>
@@ -83,20 +96,20 @@ export const Register = () => {
                         </p>
                     </div>
 
-                    <form onSubmit={formsubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Left Column: Personal Information Form */}
+                    <form onSubmit={formsubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-2">
+                        {/* left */}
                         <div className="space-y-4">
                             {/* Full Name */}
                             <div className="space-y-1">
-                                <label className="block text-sm font-semibold text-slate-700" htmlFor="fullName">Full Name</label>
+                                <label className="block text-sm font-semibold text-slate-700" htmlFor="fullName">Full Name<span className='text-red-500'>*</span></label>
                                 <input
                                     type="text"
-                                    id="fullName"
-                                    name="fullName"
+                                    id="name"
+                                    name="name"
                                     value={formData.name}
                                     onChange={handleChange}
                                     required
-                                    placeholder="Enter your full legal name"
+                                    placeholder="Enter Full Legal Name"
                                     className="w-full p-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:outline-none rounded-xl text-base"
                                 />
                             </div>
@@ -104,7 +117,7 @@ export const Register = () => {
                             {/* Age and Gender */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-1">
-                                    <label className="block text-sm font-semibold text-slate-700" htmlFor="age">Age *</label>
+                                    <label className="block text-sm font-semibold text-slate-700" htmlFor="age">Age<span className='text-red-500'>*</span></label>
                                     <input
                                         type="number"
                                         id="age"
@@ -114,26 +127,26 @@ export const Register = () => {
                                         value={formData.age}
                                         onChange={handleChange}
                                         required
-                                        placeholder="1-120"
+                                        placeholder="Enter Age"
                                         className="w-full p-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:outline-none rounded-xl text-base"
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="block text-sm font-semibold text-slate-700">Gender *</label>
+                                    <label className="block text-sm font-semibold text-slate-700">Gender<span className='text-red-500'>*</span></label>
                                     <div className="flex gap-2">
-                                        {['male', 'female', 'other'].map((genderOption) => (
-                                            <label key={genderOption} className="flex-1 cursor-pointer">
+                                        {['male', 'female', 'other'].map((select) => (
+                                            <label key={select} className="flex-1 cursor-pointer">
                                                 <input
                                                     type="radio"
                                                     name="gender"
-                                                    value={genderOption}
-                                                    checked={formData.gender === genderOption}
+                                                    value={select}
+                                                    checked={formData.gender === select}
                                                     onChange={handleChange}
                                                     required
                                                     className="sr-only peer"
                                                 />
                                                 <div className="h-12 flex items-center justify-center border-2 border-slate-200 rounded-xl peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all text-slate-700 font-semibold capitalize text-sm">
-                                                    {genderOption}
+                                                    {select}
                                                 </div>
                                             </label>
                                         ))}
@@ -143,7 +156,7 @@ export const Register = () => {
 
                             {/* Mobile Number */}
                             <div className="space-y-1">
-                                <label className="block text-sm font-semibold text-slate-700" htmlFor="mobile">Mobile Number *</label>
+                                <label className="block text-sm font-semibold text-slate-700" htmlFor="mobile">Mobile Number<span className='text-red-500'>*</span></label>
                                 <input
                                     type="tel"
                                     id="mobile"
@@ -155,7 +168,7 @@ export const Register = () => {
                                         setFormData(prev => ({ ...prev, mobile: val }))
                                     }}
                                     required
-                                    placeholder="10-digit number"
+                                    placeholder="10-digit Mobile Number"
                                     className="w-full p-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:outline-none rounded-xl text-base"
                                 />
                             </div>
@@ -169,7 +182,7 @@ export const Register = () => {
                                     rows="4"
                                     value={formData.address}
                                     onChange={handleChange}
-                                    placeholder="Enter your current residential address"
+                                    placeholder="Enter your current address"
                                     className="w-full p-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:outline-none rounded-xl text-base resize-none"
                                 />
                             </div>
@@ -177,84 +190,86 @@ export const Register = () => {
 
                         </div>
 
-                        {/* Right Column: Department Selector */}
+                        {/* right */}
                         <div className="space-y-4">
-                            <label className="block text-sm font-semibold text-slate-700">Select Department *</label>
+                            <label className="block text-sm font-semibold text-slate-700">Select Department<span className='text-red-500'>*</span></label>
                             <div className="space-y-2">
                                 <button
                                     type="button"
-                                    onClick={() => setDepartment('General Medicine')}
+                                    onClick={() => setFormData(prev => ({ ...prev, department: 'General Medicine' }))}
                                     className={`w-full p-3 flex items-center gap-3 border-2 rounded-xl text-left font-bold transition-all active:scale-95 cursor-pointer text-base
-                                        ${department === 'General Medicine'
+                                        ${formData.department === 'General Medicine'
                                             ? 'border-blue-600 bg-blue-50/50 text-blue-600'
                                             : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-750'
                                         }`}
                                 >
-                                    <div className={`p-2 rounded-lg ${department === 'General Medicine' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
+                                    <div className={`p-2 rounded-lg ${formData.department === 'General Medicine' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
                                         <span className="material-symbols-outlined text-xl">stethoscope</span>
                                     </div>
                                     <span>General Medicine</span>
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setDepartment('Cardiology')}
+                                    onClick={() => setFormData(prev => ({ ...prev, department: 'Cardiology' }))}
                                     className={`w-full p-3 flex items-center gap-3 border-2 rounded-xl text-left font-bold transition-all active:scale-95 cursor-pointer text-base
-                                        ${department === 'Cardiology'
+                                        ${formData.department === 'Cardiology'
                                             ? 'border-blue-600 bg-blue-50/50 text-blue-600'
                                             : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-750'
                                         }`}
                                 >
-                                    <div className={`p-2 rounded-lg ${department === 'Cardiology' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
+                                    <div className={`p-2 rounded-lg ${formData.department === 'Cardiology' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
                                         <span className="material-symbols-outlined text-xl">cardiology</span>
                                     </div>
                                     <span>Cardiology</span>
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setDepartment('Orthopedics')}
+                                    onClick={() => setFormData(prev => ({ ...prev, department: 'Orthopedics' }))}
                                     className={`w-full p-3 flex items-center gap-3 border-2 rounded-xl text-left font-bold transition-all active:scale-95 cursor-pointer text-base
-                                        ${department === 'Orthopedics'
+                                        ${formData.department === 'Orthopedics'
                                             ? 'border-blue-600 bg-blue-50/50 text-blue-600'
                                             : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-750'
                                         }`}
                                 >
-                                    <div className={`p-2 rounded-lg ${department === 'Orthopedics' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
+                                    <div className={`p-2 rounded-lg ${formData.department === 'Orthopedics' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
                                         <span className="material-symbols-outlined text-xl">orthopedics</span>
                                     </div>
                                     <span>Orthopedics</span>
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setDepartment('Dermatology')}
+                                    onClick={() => setFormData(prev => ({ ...prev, department: 'Dermatology' }))}
                                     className={`w-full p-3 flex items-center gap-3 border-2 rounded-xl text-left font-bold transition-all active:scale-95 cursor-pointer text-base
-                                        ${department === 'Dermatology'
+                                        ${formData.department === 'Dermatology'
                                             ? 'border-blue-600 bg-blue-50/50 text-blue-600'
                                             : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-750'
                                         }`}
                                 >
-                                    <div className={`p-2 rounded-lg ${department === 'Dermatology' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
+                                    <div className={`p-2 rounded-lg ${formData.department === 'Dermatology' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
                                         <span className="material-symbols-outlined text-xl">dermatology</span>
                                     </div>
                                     <span>Dermatology</span>
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setDepartment('Pediatrics')}
+                                    onClick={() => setFormData(prev => ({ ...prev, department: 'Pediatrics' }))}
                                     className={`w-full p-3 flex items-center gap-3 border-2 rounded-xl text-left font-bold transition-all active:scale-95 cursor-pointer text-base
-                                        ${department === 'Pediatrics'
+                                        ${formData.department === 'Pediatrics'
                                             ? 'border-blue-600 bg-blue-50/50 text-blue-600'
                                             : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-750'
                                         }`}
                                 >
-                                    <div className={`p-2 rounded-lg ${department === 'Pediatrics' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
+                                    <div className={`p-2 rounded-lg ${formData.department === 'Pediatrics' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center`}>
                                         <span className="material-symbols-outlined text-xl">child_care</span>
                                     </div>
                                     <span>Pediatrics</span>
                                 </button>
                             </div>
                         </div>
+
+
                         {/* Symmetrical Action Buttons */}
-                        <div className="col-span-1 lg:col-span-2 flex justify-end gap-4 pt-4 border-t border-slate-100">
+                        <div className="col-span-1 lg:col-span-2 flex justify-end gap-x-4 pt-4 border-t border-slate-100">
                             <button
                                 type="button"
                                 onClick={() => {
@@ -264,8 +279,8 @@ export const Register = () => {
                                         gender: '',
                                         mobile: '',
                                         address: '',
+                                        department: ''
                                     })
-                                    setDepartment('')
                                 }}
                                 className="w-full sm:w-36 h-14 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center justify-center"
                             >
