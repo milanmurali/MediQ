@@ -8,7 +8,7 @@ export const Register = () => {
     const navigate = useNavigate()
     const [errors, setErrors] = useState('')
     const [loading, setLoading] = useState(false)
-    const API = import.meta.env.VITE_BACKEND_HOST;
+    const API = import.meta.env.VITE_BACKEND_HOST
 
 
     const [formData, setFormData] = useState({
@@ -30,25 +30,24 @@ export const Register = () => {
 
     const formsubmit = async (e) => {
         e.preventDefault()
-        setLoading(true);
-        setErrors("");
+        setLoading(true)
+        setErrors("")
         try {
-            const response = await axios.post(`${API}/api/patients`, formData);
-            console.log(response.data);
+            const response = await axios.post(`${API}/api/patients`, formData)
+            console.log(response.data)
 
             localStorage.setItem("name", response.data.data.name)
             localStorage.setItem("token", response.data.data.token)
+            localStorage.setItem("age", response.data.data.age)
             localStorage.setItem("department", response.data.data.department)
             localStorage.setItem("created_at", response.data.data.created_at)
 
-            // navigate("/token");
+            // navigate("/token")
         } catch (error) {
-            console.log(error);
-            setErrors(error.response?.data?.message || "Something went wrong!");
+            console.log(error)
+            setErrors(error.response?.data?.message || "Something went wrong!")
         } finally {
-            setTimeout(() => {
-                setLoading(false);
-            }, 500);
+            setLoading(false)
         }
     }
 
