@@ -7,6 +7,15 @@ MediQ is a self-service patient registration kiosk designed to streamline hospit
 The application is built as a full-stack web application using React, Express, and SQLite.
 
 ---
+## Live Demo
+
+### Frontend (vercel)
+https://medi-q-five.vercel.app/
+
+### Backend API (render)
+https://mediq-backend-32vl.onrender.com/
+
+---
 
 ## Features
 
