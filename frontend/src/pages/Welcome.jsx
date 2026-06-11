@@ -117,7 +117,7 @@ export const Welcome = () => {
                         : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                       }`}
                   >
-                    Extra Lg
+                    XL
                   </button>
                 </div>
               </div>

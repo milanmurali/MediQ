@@ -7,6 +7,7 @@ export const Register = () => {
     const [textSize, setTextSize] = useState(localStorage.getItem('fontSize') || 'md')
     const navigate = useNavigate()
     const [errors, setErrors] = useState('')
+    const [loading, setLoading] = useState(false)
     const API = import.meta.env.VITE_BACKEND_HOST;
 
 
@@ -29,14 +30,25 @@ export const Register = () => {
 
     const formsubmit = async (e) => {
         e.preventDefault()
+        setLoading(true);
         setErrors("");
-        console.log(formData);
         try {
             const response = await axios.post(`${API}/api/patients`, formData);
             console.log(response.data);
+
+            localStorage.setItem("name", response.data.data.name)
+            localStorage.setItem("token", response.data.data.token)
+            localStorage.setItem("department", response.data.data.department)
+            localStorage.setItem("created_at", response.data.data.created_at)
+
+            // navigate("/token");
         } catch (error) {
-            setErrors(error.response.data.message);
             console.log(error);
+            setErrors(error.response?.data?.message || "Something went wrong!");
+        } finally {
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
         }
     }
 
@@ -60,7 +72,6 @@ export const Register = () => {
             body: "text-xl md:text-2xl",
         }
     }
-
     const currentFontSize = sizeClasses[textSize]
 
 
@@ -269,29 +280,41 @@ export const Register = () => {
 
 
                         {/* Symmetrical Action Buttons */}
-                        <div className="col-span-1 lg:col-span-2 flex justify-end gap-x-4 pt-4 border-t border-slate-100">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setFormData({
-                                        name: '',
-                                        age: '',
-                                        gender: '',
-                                        mobile: '',
-                                        address: '',
-                                        department: ''
-                                    })
-                                }}
-                                className="w-full sm:w-36 h-14 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center justify-center"
-                            >
-                                Reset
-                            </button>
-                            <button
-                                type="submit"
-                                className="w-full sm:w-36 h-14 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center"
-                            >
-                                Continue
-                            </button>
+                        <div className="col-span-1 lg:col-span-2 flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-100">
+                            {errors ? (
+                                <div
+                                    className="flex items-center gap-2 p-3 rounded-xl border border-red-200 bg-red-50 text-red-700 font-medium text-sm sm:text-base"
+                                >
+                                    <span className="material-symbols-outlined  ">error</span>
+                                    {errors}
+                                </div>
+                            ) : <div>
+                            </div>
+                            }
+                            <div className="flex gap-x-4 w-full sm:w-auto justify-end">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setFormData({
+                                            name: '',
+                                            age: '',
+                                            gender: '',
+                                            mobile: '',
+                                            address: '',
+                                            department: ''
+                                        })
+                                    }}
+                                    className="w-full sm:w-36 h-14 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center justify-center"
+                                >
+                                    Reset
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="w-full sm:w-36 h-14 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center"
+                                >
+                                    {loading ? "Registering..." : "Continue"}
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -347,7 +370,7 @@ export const Register = () => {
                                                 : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                                             }`}
                                     >
-                                        Extra Lg
+                                        XL
                                     </button>
                                 </div>
                             </div>
