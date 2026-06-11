@@ -288,8 +288,7 @@ export const Register = () => {
                                     <span className="material-symbols-outlined  ">error</span>
                                     {errors}
                                 </div>
-                            ) : <div>
-                            </div>
+                            ) : <div></div>
                             }
                             <div className="flex gap-x-4 w-full sm:w-auto justify-end">
                                 <button

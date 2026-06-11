@@ -42,7 +42,7 @@ export const Welcome = () => {
       {/* Main */}
       <main className="flex-grow flex flex-col items-center justify-center relative px-6 py-12 z-10">
 
-        {/* Welcome Hero Content */}
+        {/* Welcome */}
         <div className="w-full max-w-3xl text-center space-y-12">
           <div className="space-y-4">
             <h1 className={`${currentFontSize.title} font-bold text-blue-600`}>
@@ -53,7 +53,7 @@ export const Welcome = () => {
             </p>
           </div>
 
-          {/* Central Start Button */}
+          {/* Button */}
           <div className="flex flex-col items-center gap-4">
             <button
               onClick={() => navigate("/register")}
