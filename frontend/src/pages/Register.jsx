@@ -32,7 +32,7 @@ export const Register = () => {
         e.preventDefault()
         setLoading(true)
         setErrors("")
-        try {
+        try {            
             const response = await axios.post(`${API}/api/patients`, formData)
             console.log(response.data)
 
@@ -42,7 +42,7 @@ export const Register = () => {
             localStorage.setItem("department", response.data.data.department)
             localStorage.setItem("created_at", response.data.data.created_at)
 
-            // navigate("/token")
+            navigate("/token")
         } catch (error) {
             console.log(error)
             setErrors(error.response?.data?.message || "Something went wrong!")
@@ -292,6 +292,7 @@ export const Register = () => {
                             <div className="flex gap-x-4 w-full sm:w-auto justify-end">
                                 <button
                                     type="button"
+                                    disabled={loading}
                                     onClick={() => {
                                         setFormData({
                                             name: '',
@@ -307,6 +308,7 @@ export const Register = () => {
                                     Reset
                                 </button>
                                 <button
+                                disabled={loading}
                                     type="submit"
                                     className="w-full sm:w-36 h-14 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center"
                                 >

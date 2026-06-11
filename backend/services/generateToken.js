@@ -27,9 +27,5 @@ export const generateToken = (department) => {
 
     nextNumber = currentNumber + 1;
   }
-  console.log({
-    department,
-    latestPatient,
-  });
 return `${deptCode}-${String(nextNumber).padStart(3, "0")}`
 };

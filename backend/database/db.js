@@ -13,7 +13,8 @@ db.exec(`
     address TEXT,
     department TEXT NOT NULL,
     token TEXT UNIQUE NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT (datetime('now', '+5 hours', '+30 minutes')
+)
   );
 
   CREATE INDEX IF NOT EXISTS idx_patients_name

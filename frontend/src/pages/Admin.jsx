@@ -36,7 +36,7 @@ export const Admin = () => {
         if (search.trim()) {
             params.append("search", search)
         }
-
+        
         if (department && department !== "All") {
             params.append("department", department)
         }

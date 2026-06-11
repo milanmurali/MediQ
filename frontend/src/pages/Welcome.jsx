@@ -5,7 +5,7 @@ export const Welcome = () => {
   const [showAccessibilityMenu, setShowAccessibilityMenu] = useState(false)
   const [textSize, setTextSize] = useState(localStorage.getItem('fontSize') || 'md')
   const navigate = useNavigate()
-
+  localStorage.clear()
   const changeTextSize = (size) => {
     setTextSize(size)
     localStorage.setItem("fontSize", size)
