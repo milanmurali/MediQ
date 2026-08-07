@@ -9,11 +9,7 @@ The application is built as a full-stack web application using React, Python (Fa
 ---
 ## Live Demo
 
-### Frontend (vercel)
 https://medi-q-five.vercel.app/
-
-### Backend API (render)
-https://mediq-backend-32vl.onrender.com/
 
 ---
 
@@ -259,10 +255,6 @@ Start FastAPI server:
 ```bash
 uvicorn app.main:app --reload
 ```
-
-Server runs at `http://127.0.0.1:8000`.
-
----
 
 ### Node.js Backend Setup (Express)
 
