@@ -47,9 +47,14 @@ export const addPatient = (req, res) => {
 
         return res.status(201).json({
             success: true,
-            data: patient,
+            data: {
+                ...patient,
+                created_at: new Date(
+                    patient.created_at.replace(" ", "T") + "Z"
+                ).toISOString(),
+            },
         });
-    }
+    } 
 
     catch (error) {
         console.error(error);
@@ -62,29 +67,6 @@ export const addPatient = (req, res) => {
 };
 
 
-// export const getPatients = (req, res) => {
-//     try {
-
-//         const { search, department } = req.query;
-
-//         const patients = db.prepare(`SELECT * FROM patients ORDER BY created_at DESC`).all();
-
-//         return res.status(200).json({
-//             success: true,
-//             data: patients,
-//         });
-//     }
-//     catch (error) {
-//         console.error(error);
-//         return res.status(500).json({
-//             success: false,
-//             message: "Failed to fetch patients",
-//         });
-//     }
-// }
-
-
-//v2 with search, filter
 export const getPatients = (req, res) => {
 
     try {

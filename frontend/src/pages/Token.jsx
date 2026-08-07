@@ -22,16 +22,21 @@ export const Token = () => {
     const department = localStorage.getItem("department")
     const created_at = localStorage.getItem("created_at")
 
-    const formatter = (timestampString) => {
-        if (!timestampString) return { date: '-', time: '-' }
+const formatter = (timestamp) => {
+    if (!timestamp) return { date: "-", time: "-" };
 
-        const [rawDate, rawTime] = timestampString.split(' ')
-        const [year, month, day] = rawDate.split('-')
-        const formattedDate = `${day}/${month}/${year}`
-        const formattedTime = rawTime.slice(0, 5)
+    const date = new Date(timestamp);
 
-        return { date: formattedDate, time: formattedTime }
-    }
+    return {
+        date: date.toLocaleDateString("en-GB"),
+        time: date.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+
+        }),
+    };
+};
 
 
     const changeTextSize = (size) => {

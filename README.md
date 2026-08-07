@@ -4,7 +4,7 @@
 
 MediQ is a self-service patient registration kiosk designed to streamline hospital check-in and registration workflows. Patients can register through a kiosk interface, receive a department-specific token, and hospital staff can manage registrations through an administrative dashboard.
 
-The application is built as a full-stack web application using React, Express, and SQLite.
+The application is built as a full-stack web application using React, Python (FastAPI) or Express, and SQLite.
 
 ---
 ## Live Demo
@@ -66,15 +66,44 @@ https://mediq-backend-32vl.onrender.com/
 
 ### Backend
 
+#### Python (FastAPI)
+* Python 3.10+
+* FastAPI
+* Uvicorn
+* SQLAlchemy
+* Pydantic
+
+#### Node.js (Express)
 * Node.js
 * Express.js
 * SQLite
 * better-sqlite3
+
 ---
 
 ## Project Structure
 
-### Backend
+### Python Backend (FastAPI)
+
+```text
+pythonbackend/
+│
+├── app/
+│   ├── routers/
+│   │   └── patients.py
+│   ├── services/
+│   │   └── token.py
+│   ├── crud.py
+│   ├── database.py
+│   ├── main.py
+│   ├── models.py
+│   └── schemas.py
+│
+├── mediq.db
+└── requirements.txt
+```
+
+### Node.js Backend (Express)
 
 ```text
 backend/
@@ -194,12 +223,48 @@ PED-003
 
 ### Prerequisites
 
-* Node.js v18+
-* npm
+* Python 3.10+ (for Python backend)
+* Node.js v18+ & npm (for Frontend / Express backend)
 
 ---
 
-### Backend Setup
+### Python Backend Setup (FastAPI)
+
+Navigate to pythonbackend:
+
+```bash
+cd pythonbackend
+```
+
+Create and activate a virtual environment:
+
+```bash
+# Windows
+python -m venv venv
+.\venv\Scripts\activate
+
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start FastAPI server:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Server runs at `http://127.0.0.1:8000`.
+
+---
+
+### Node.js Backend Setup (Express)
 
 Navigate to backend:
 

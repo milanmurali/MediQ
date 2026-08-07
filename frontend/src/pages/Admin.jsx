@@ -47,6 +47,7 @@ export const Admin = () => {
             const response = await axios.get(API)
             // console.log(response.data.data)
             setPatients(response.data.data)
+            
         }
         catch (error) {
             console.log(error)
@@ -55,23 +56,28 @@ export const Admin = () => {
             setLoading(false)
         }
     }
-
+    
     useEffect(() => {
         fetch()
     }, [department,search])
+    
+    
 
+const formatter = (timestamp) => {
+    if (!timestamp) return { date: "-", time: "-" };
 
+    const date = new Date(timestamp);
 
-    const formatter = (timestampString) => {
-        if (!timestampString) return { date: '-', time: '-' }
+    return {
+        date: date.toLocaleDateString("en-GB"),
+        time: date.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
 
-        const [rawDate, rawTime] = timestampString.split(' ')
-        const [year, month, day] = rawDate.split('-')
-        const formattedDate = `${day}/${month}/${year}`
-        const formattedTime = rawTime.slice(0, 5)
-
-        return { date: formattedDate, time: formattedTime }
-    }
+        }),
+    };
+};
     
     return (
         <div className="flex flex-col min-h-screen bg-slate-50 text-slate-800 overflow-x-hidden select-none">
